@@ -1,0 +1,109 @@
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50 dark:bg-gray-700">
+        <tr>
+          @for (col of columns; track col.property) {
+          <th
+            [class.cursor-pointer]="col.sortable"
+            (click)="col.sortable ? onSort(col.property) : null"
+            class="px-6 py-4 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider select-none transition-colors"
+            [ngClass]="{
+              'hover:bg-gray-100 dark:hover:bg-gray-600': col.sortable
+            }"
+          >
+            <div class="flex items-center">
+              <span>{{ col.label }}</span>
+
+              @if (col.sortable) {
+              <span class="ml-2">
+                @if (sortBy === col.property) {
+                <span class="text-blue-500">{{ order === 'asc' ? '↑' : '↓' }}</span>
+                } @else {
+                <span class="text-gray-400 opacity-50">↕</span>
+                }
+              </span>
+              }
+            </div>
+          </th>
+          }
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        @if (isLoading) {
+        <tr>
+          <td class="p-12 text-center" [attr.colspan]="columns.length">
+            <div class="flex flex-col items-center justify-center">
+              <app-loading-spinner />
+              <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Loading data...</p>
+            </div>
+          </td>
+        </tr>
+        } @else if (totalItems > 0) {
+        <ng-content></ng-content>
+        } @else {
+        <tr>
+          <td class="p-12 text-center" [attr.colspan]="columns.length">
+            <svg
+              class="w-16 h-16 text-gray-400 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+              />
+            </svg>
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-1">
+              No data available
+            </h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              Try adjusting your filters or search criteria
+            </p>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 border-t border-gray-200 dark:border-gray-600">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="text-sm text-gray-700 dark:text-gray-300">
+          Showing
+          <span class="font-medium">{{ (currentPage - 1) * pageSize + 1 }}</span> to
+          <span class="font-medium">{{ Math.min(currentPage * pageSize, totalItems) }}</span>
+          of <span class="font-medium">{{ totalItems }}</span> items
+        </div>
+
+        @if (pageSizeOptions.length > 0) {
+        <div class="flex items-center gap-2">
+          <label for="pageSize" class="text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            Per page:
+          </label>
+          <select
+            id="pageSize"
+            [value]="pageSize"
+            (change)="onPageSizeChange($event)"
+            class="px-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+          >
+            @for (option of pageSizeOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+        }
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="onPageChange($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>

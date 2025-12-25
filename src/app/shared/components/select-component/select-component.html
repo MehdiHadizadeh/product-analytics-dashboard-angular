@@ -1,0 +1,25 @@
+<div class="w-full">
+  @if (label) {
+  <label [for]="selectId" class="block text-sm font-medium mb-2 dark:text-gray-200">
+    {{ label }}
+    @if (required) {
+    <span class="text-red-500">*</span>
+    }
+  </label>
+  }
+
+  <select
+    [id]="selectId"
+    [disabled]="disabled"
+    [required]="required"
+    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+    [(ngModel)]="value"
+    (change)="onSelectChange()"
+    (blur)="onBlur()"
+  >
+    <option value="">{{ placeholder }}</option>
+    @for (option of options; track option.value) {
+    <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+</div>
