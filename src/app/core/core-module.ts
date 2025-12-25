@@ -1,8 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoggingInterceptor } from './interceptors/logging.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-
 
 @NgModule({
   declarations: [],
@@ -13,13 +11,9 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
       useClass: AuthInterceptor,
       multi: true
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoggingInterceptor,
-      multi: true
-    }
   ]
 })
+
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
     if (parentModule) {

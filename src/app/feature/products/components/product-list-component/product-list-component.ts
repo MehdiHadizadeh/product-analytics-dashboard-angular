@@ -62,7 +62,6 @@ export class ProductListComponent implements OnInit {
   }
 
   private setupFormListeners(): void {
-    // Handle search and category changes
     this.filterForm.get('search')?.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
