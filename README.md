@@ -13,6 +13,8 @@
 
 This project implements a comprehensive **Product Analytics Dashboard** built with **Angular 20** using **NgModule-based architecture**. While standalone components are the modern Angular approach, this project demonstrates the traditional **modular pattern** to showcase understanding of enterprise legacy codebases and migration strategies. It features advanced data tables, real-time analytics, chart visualizations, and follows SOLID principles with clean separation of concerns.
 
+Note: While Angular 14+ recommends standalone components, many enterprise applications still use NgModules, and understanding both patterns is crucial for real-world development.
+
 ## ✨ Key Features
 
 ### Core Functionality
